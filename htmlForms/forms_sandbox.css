@@ -1,0 +1,30 @@
+#user_message_form {
+  width: 400px;
+}
+
+#user_message_form > fieldset {
+  display: flex;
+  flex-direction: column;
+}
+
+#user_message_form div {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+#user_message_form label {
+  width: 50px;
+  margin-right: 1rem;
+}
+
+#user_message_form input, #user_message_form textarea {
+  width: calc(100% - 50px - 1rem);
+}
+
+#user_message_form button {
+  width: auto;
+  display: block;
+  padding: .5rem 1rem;
+  margin: 0 auto;
+  border-radius: 500px;
+}
