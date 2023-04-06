@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Install Lodedash from website -->
+  <!--
+    Problems with managing Javascript projects this way:
+
+      - It is not immediately apparent that the script depends on an external library.
+      - If a dependency is missing, or included in the wrong order, the application will not work properly.
+      - If a dependency is included but not used, the browser will be forced to download unnecessary code.
+      - No global scope pollution
+  -->
+  <!-- Remove script call for downloading lodash, as we have imported it using npm -->
+  <!-- <script src="https://unpkg.com/lodash@4.17.20"></script> -->
+  <title>Webpack Demo</title>
+</head>
+<body>
+  <!-- We don't use ./src/index.js
+
+  <script type="text/javascript" src="./src/index.js"></script>
+  -->
+  <script src="main.js"></script>
+</body>
+</html>

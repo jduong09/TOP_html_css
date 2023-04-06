@@ -139,3 +139,16 @@
   grid-row: 6 / 7;
   text-align: center;
 }
+
+#div-autofit-autofill {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  background-color: yellow;
+  gap: 4px;
+  margin-top: 4rem;
+}
+
+#div-autofit-autofill > div {
+  height: 250px;
+  background-color: violet;
+}
