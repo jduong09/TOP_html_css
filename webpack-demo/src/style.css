@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'Brando';
+  src: url(./branda-font/Branda-yolq.ttf);
+}
+
+.hello {
+  color: red;
+  font-family: 'Brando';
+  background: url('./chocobo.jpg');
+}
