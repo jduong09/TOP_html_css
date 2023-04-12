@@ -1,0 +1,68 @@
+SOLID Javascript: The Single Responsibility Principle
+- The Single Responsibility Principle
+- The Open/Closed Principle
+- The Liskov Substitution Principle
+- The Interface Segregation Principle
+- The Dependency Inversion Principle
+
+The Single Responsibility Principle
+- The single responsibility principle relates to the functional relatedness of the elements of a module.
+- A class should have only one reason to change.
+- An object should have a cohesive set of behaviors, together comprising a single responsibility that, if changed, would requrie the modification of the object's definition.
+- An object's definition should only have to be modified due to changes to a single responsibility within the system.
+
+Object Role stereotypes (Object Design: Roles, Responsibilities, and Collaborations by Rebecca Wirfs-Brock and Alan McKean)
+- Information Holder: An object designed to know certain information and provide the information to other objects.
+- Structurer: An object that maintains relationships between objects and information about those relationships.
+- Service Provider: An object that performs specific work and offers services to others on demans.
+- Controller: An object designed to make decisions and control a complex task.
+- Coordinator: An Object that doesn't make many decisions but, in a rote or mechanical way, delegates work to other objects.
+- Interfacer: An object that transforms information or requests between distincts parts of a system.
+
+Single Responsibility Principle Example: Movement of product items into a shopping cart
+function Product(id, description) {
+  this.getId = function() {
+    return id;
+  };
+
+  this.getDescription = function() {
+    return description;
+  };
+}
+
+function Cart(eventAggregator) {
+  var items = [];
+
+  this.addItem = function(item) {
+    items.push(item);
+  };
+}
+
+var products = [
+  new Product(1, "Star Wars Lego Ship"),
+  new Product(2, "Barbie Doll"),
+  new Product(3, "Remote Control Airplane"),
+  cart = new Cart();
+
+(function() {
+  function addToCart() {
+    var productId = ${this}.attr('id');
+    var product = $.grep(products, function(x) {
+      return x.getId() == productId;
+    })[0];
+    cart.addItem(product);
+
+    var newItem = $('<li></li>')
+      .html(product.getDescription())
+      .attr('id-cart', product.getId())
+      .appendTo("#cart");
+  }
+
+  products.forEach(function(product) {
+    var newItem = $('<li></li>')
+      .html(product.getDescription())
+      .attr('id', product.getId())
+      .dblclick(addToCart)
+      .appendTo("#products");
+  });
+})();
