@@ -40,16 +40,36 @@ header {
 
 /* Img Carousel */
 #div-carousel {
-  width: 100%;
+  position: relative;
   overflow: hidden;
 }
+
 #list-carousel {
   display: flex;
   align-items: center;
 }
 
-#list-carousel > li {
-  margin: 0 1rem;
+#list-carousel > li > img {
+  width: 100vw;
+}
+
+#nav-prev-next {
+  width: 100vw;
+}
+
+#btn-previous, #btn-next {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  cursor: pointer;
+}
+
+#btn-previous {
+  left: 0;
+}
+
+#btn-next {
+  right: 0;
 }
 
 #nav-buttons {
@@ -65,5 +85,9 @@ header {
   border: 1px solid black;
   border-radius: 50%;
   margin: 0 .25rem;
+}
+
+#nav-buttons > li > span.selected {
+  background-color: black;
 }
 
