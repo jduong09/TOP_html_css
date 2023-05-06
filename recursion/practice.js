@@ -54,5 +54,141 @@ const allAreLessThanSeven = all([1, 2, 4, 3], (num) => {
 });
 
 // all[]
-
+/*
 console.log(allAreLessThanSeven); // false
+*/
+
+const productOfArray = (arr) => {
+  if (arr.length === 1) {
+    return arr[0];
+  }
+
+  return productOfArray(arr.slice(1)) * arr[0]; 
+}
+
+/*
+const six = productOfArray([2, 5, 10]); // 6
+const sixty = productOfArray([1, 2, 3, 10]); // 60
+console.log(six);
+console.log(sixty);
+*/
+
+const contains = (obj, value) => {
+  let key = Object.keys(obj)[0];
+
+  if (typeof obj[key] !== 'object') {
+    let iterableObj = Object.keys(obj);
+
+    for (let i = 0; i < iterableObj.length; i++) {
+      const key = iterableObj[i];
+
+      if (obj[key] === value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if (!obj.value) {
+    const otherKey = Object.keys(obj)[0];
+
+    return contains(obj[otherKey], value);
+  }
+};
+
+const nestedObject = {
+  data: {
+      info: {
+          stuff: {
+              thing: {
+                  moreStuff: {
+                      magicNumber: 44,
+                      something: 'foo2'
+                  }
+              }
+          }
+      }
+  }
+}
+
+let hasIt = contains(nestedObject, "foo2") // true
+let doesntHaveIt = contains(nestedObject, "foo"); // false
+
+/*
+console.log(hasIt);
+console.log(doesntHaveIt);
+*/
+
+// Given a multi-dimensional integer array,
+// return the total number of integers stored inside this array
+const totalIntegers = (array) => {
+  // Iterate through the array argument
+  let numIntegersInArray = 0;
+  for (let i = 0; i < array.length; i++) {
+    // If the iterated value is an array, we run totalIntegers on it, and iterate through it.
+    if (Array.isArray(array[i])) {
+      numIntegersInArray += totalIntegers(array[i]);
+    } else {
+      // It's a value so we return 1?
+      if (Number.isInteger(array[i])) {
+        numIntegersInArray += 1;
+      }
+    }
+  }
+
+  return numIntegersInArray;
+};
+
+var seven = totalIntegers([[[5], 3], 0, 2, ['foo'], [], ['boo', [5, 6]]]); // 7
+
+/*
+console.log(seven);
+*/
+
+// Write a function that sums squares of numbers in list that may contain more lists
+const sumSquares = (array) => {
+  let total = 0;
+  for (let i = 0; i < array.length; i++) {
+    let value = array[i];
+
+    if (Array.isArray(value)) {
+      total += sumSquares(value);
+    } else {
+      total += (value * value) ;
+    }
+  }
+
+  return total;
+};
+
+/*
+var l = [1,2,3]; 
+console.log(sumSquares(l)); // 1 + 4 + 9 = 14
+
+l = [[1,2],3]; 
+console.log(sumSquares(l)); // 1 + 4 + 9 = 14
+
+l = [[[[[[[[[1]]]]]]]]] 
+console.log(sumSquares(l)); // 1 = 1
+
+l = [10,[[10],10],[10]] 
+console.log(sumSquares(l)); // 100 + 100 + 100 + 100 = 400
+*/
+
+// The function should return an array containing repetitions of the number argument.
+// For instance, replicate(3, 5) should return [5,5,5].
+// If the times argument is negative, return an empty array.
+const replicate = (reps, num) => {
+  if (reps <= 0) {
+    return [];
+  }
+  if (reps === 1) {
+    return [num];
+  }
+
+  return [num].concat(replicate(reps - 1, num));
+}
+
+console.log(replicate(3, 5)) // [5, 5, 5]
+console.log(replicate(2, 69)) // [69]
+console.log(replicate(-2, 6)) // []
