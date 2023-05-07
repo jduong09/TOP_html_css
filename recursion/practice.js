@@ -187,8 +187,40 @@ const replicate = (reps, num) => {
   }
 
   return [num].concat(replicate(reps - 1, num));
+};
+
+
+/*
+console.log(replicate(3, 5)); // [5, 5, 5]
+console.log(replicate(2, 69)); // [69]
+console.log(replicate(-2, 6)); // []
+*/
+
+const iterFibs = (num) => {
+  let array = [0, 1];
+  for (let i = 2; i < num; i++) {
+    const sum = array[i - 1] + array[i - 2];
+    array.push(sum);
+  }
+  
+  return array;
 }
 
-console.log(replicate(3, 5)) // [5, 5, 5]
-console.log(replicate(2, 69)) // [69]
-console.log(replicate(-2, 6)) // []
+console.log(iterFibs(8));
+
+// sums each number with the one before it.
+
+const fibs = (num) => {
+  if (num === 2) return [0, 1];
+
+  let array = fibs(num - 1);
+  return array.concat(array[array.length-1] + array[array.length-2]);
+  
+  /*
+  if (num < 2) return num;
+
+  return fibs(num - 1) + fibs(num - 2);
+  */
+}
+
+console.log(fibs(8)); // [0, 1, 1, 2, 3, 5, 8, 13]
