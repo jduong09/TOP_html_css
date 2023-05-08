@@ -206,7 +206,9 @@ const iterFibs = (num) => {
   return array;
 }
 
+/*
 console.log(iterFibs(8));
+*/
 
 // sums each number with the one before it.
 
@@ -223,4 +225,56 @@ const fibs = (num) => {
   */
 }
 
+/*
 console.log(fibs(8)); // [0, 1, 1, 2, 3, 5, 8, 13]
+*/
+
+// Merge Sort
+// Time Complexity: O(nlog(n)) Linearithmic
+
+// Goal of Merge Sort: Sort array from smallest to largest
+// Example Arr: [4, 1, 43, 32, 9, 68, 199];
+
+const mergeSort = (arr) => {
+  // Split array in half until array length is just one element.
+  if (arr.length <= 1) {
+    return arr;
+  }
+
+  // Split Array in half.
+  const midIdx = Math.floor(arr.length / 2);
+
+  // Recursively run mergesort on both sides
+  const leftSide = mergeSort(arr.slice(0, midIdx));
+  const rightSide = mergeSort(arr.slice(midIdx));
+
+  // Merge both sides.
+  return merge(leftSide, rightSide);
+}
+
+const merge = (left, right) => {
+  let sortedArr = [];
+  console.log('Merge', left, right);
+
+  while (left.length && right.length) {
+    if (left[0] < right[0]) {
+      sortedArr.push(left.shift());
+    } else {
+      sortedArr.push(right.shift());
+    }
+
+    console.log(sortedArr);
+  }
+
+  while (left.length) {
+    sortedArr.push(left.shift());
+  }
+
+  while (right.length) {
+    sortedArr.push(right.shift());
+  }
+
+  return sortedArr;
+}
+
+console.log(mergeSort([4, 1, 43, 32, 9, 68, 199]));
