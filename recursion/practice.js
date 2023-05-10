@@ -254,7 +254,6 @@ const mergeSort = (arr) => {
 
 const merge = (left, right) => {
   let sortedArr = [];
-  console.log('Merge', left, right);
 
   while (left.length && right.length) {
     if (left[0] < right[0]) {
@@ -262,8 +261,6 @@ const merge = (left, right) => {
     } else {
       sortedArr.push(right.shift());
     }
-
-    console.log(sortedArr);
   }
 
   while (left.length) {
@@ -277,4 +274,207 @@ const merge = (left, right) => {
   return sortedArr;
 }
 
+/*
 console.log(mergeSort([4, 1, 43, 32, 9, 68, 199]));
+*/
+
+/* Linked List */
+
+class LinkedList {
+  constructor() {
+    this.data = [];
+  }
+
+  // Add new node to end of the list
+  append(value) {
+    // If the list is empty
+    if (this.data.length === 0) {
+      // We do not need to make any changes to nodes in the existing list.
+      value.next = null;
+      this.data.push(value);
+      return this.data;
+    } else {
+      // There are items in the list, and we need to get the tail node and make it's next to be our newly inserted value
+      const prevTail = this.data[this.data.length - 1];
+      prevTail.next = value;
+      value.next = null;
+
+      this.data.push(value);
+      return this.data;
+    }
+  }
+
+  // Add new node to the beginning of the list
+  prepend(value) {
+    if (this.data.length === 0) {
+      value.next = null;
+      this.data.unshift(value);
+      return this.data;
+    } else {
+      const firstNode = this.data[0];
+      value.next = firstNode;
+
+      this.data.unshift(value);
+      return this.data;
+    }
+  }
+
+  // Return the total number of nodes in the list
+  size() {
+    return this.data.length;
+  }
+
+  // Return the first node in the list
+  head() {
+    return this.data[0];
+  }
+
+  // Return the last node in the list
+  tail() {
+    return this.data[this.data.length - 1];
+  }
+
+  // Return the node at the given index
+  at(index) {
+    return this.data[index] ? this.data[index] : undefined;
+  }
+
+  // Removes the last element from the list
+  pop() {
+    // If there is one or less than one element in the list, we don't need to make any changes to the nodes next value.
+    if (this.data.length === 0) {
+      return;
+    } else if (this.data.length === 1) {
+      this.data.pop();
+    } else {
+      const newLastEle = this.data[this.data.length - 2];
+      newLastEle.next = null;
+
+      this.data.pop();
+    }
+
+    return this.data;
+  }
+
+  // Returns true if the passed in value is in the list and otherwise returns false
+  contains(value) {
+    for (let i = 0; i < this.data.length; i++) {
+      if (this.data[i] === value) return true;
+    }
+
+    return false;
+  }
+
+  // Returns the index of the node containing value, or null if not found.
+  find(value) {
+    for (let i = 0; i < this.data.length; i++) {
+      if (this.data[i] === value) return i;
+    }
+    return null;
+  }
+
+  // Returns linked list as a string: ( value ) => ( value ) => ( value ) => null
+  toString() {
+    let string = '';
+   
+    string += `( ${this.data[this.data.length - 1].value} ) => null`;
+
+    return string;
+  }
+
+  // Insert a new node with the provided value at the given index
+  insertAt(value, index) {
+    if (index === 0) {
+      this.prepend(value);
+    } else if (index === this.data.length - 1) {
+      this.append(value);
+    } else {
+      const prevIndexNode = this.data[index - 1]
+      const currentIndexNode = this.data[index];
+      prevIndexNode.next = value;
+      value.next = currentIndexNode;
+    }
+
+    return this.data;
+  }
+
+  // Removes the node at the given index
+  removeAt(index) {
+
+  }
+}
+
+class Node {
+  constructor(value) {
+    this.data = {
+      value: value || '',
+      next: null
+    }
+  }
+
+  get value() {
+    return this.data.value;
+  }
+
+  set value(value) {
+    this.data.value = value;
+  }
+
+  // Get next element in linked list
+  get next() {
+    return this.data.next;
+  }
+
+  // Set  next node in linked list
+  set next(value) {
+    this.data.next = value;
+  }
+}
+
+const newNode = new Node('hello');
+const linkedList = new LinkedList();
+
+console.log(linkedList); // Class
+linkedList.append(newNode);
+console.log(linkedList);
+console.log(newNode.next);
+
+const newerNode = new Node('hi');
+linkedList.append(newerNode);
+console.log('Newest Linked List', linkedList);
+
+const coolNode = new Node('cool');
+linkedList.prepend(coolNode);
+console.log(linkedList);
+console.log('Cool Node Next: ', coolNode.next);
+
+// Size, head, tail method calls
+/*
+console.log(linkedList.size());
+console.log(linkedList.head());
+console.log(linkedList.tail());
+*/
+
+// at, not zero-indexed
+console.log(linkedList.at(2)); // return node at the second spot
+console.log(linkedList.at(5)); // return undefined
+
+// pop
+console.log(linkedList.tail());
+console.log(linkedList.pop());
+console.log(linkedList.tail());
+
+// contains
+console.log(linkedList.contains(coolNode)); // true
+console.log(linkedList.contains(newNode)); // true
+console.log(linkedList.contains(newerNode)); // false
+
+// find
+console.log(linkedList.find(newNode)); // 2
+console.log(linkedList.find(newerNode)); // null
+
+// toString
+console.log(linkedList.toString());
+
+// insertAt()
+console.log(linkedList.insertAt(newerNode, 1));
