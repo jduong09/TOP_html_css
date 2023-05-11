@@ -476,3 +476,32 @@ class Node {
     this.data.next = value;
   }
 }
+
+/* Balanced Binery Tree */
+
+// Where the left subtree and right subtree do not differ in depth by > 1
+// Key to making a balanced Binery tree is finding the middle element of the nodes.
+/*
+  - Set The middle element of the array as root.
+  - Recursively do the same for the left half and right half.
+  - Get the middle of the left half and make it the left child of the root created in step 1.
+  - Get the middle of the right half and make it the right child of the root created in step 1.
+  - Print the preorder of the tree.
+*/
+
+const balanceBST = (array, start, end) => {
+  if (start > end) {
+    return null;
+  }
+
+  const midIdx = Math.floor(array.length / 2);
+  const root = array[midIdx];
+
+  balanceBST(array.slice(0, midIdx), 0, midIdx - 1);
+  balanceBST(array.slice(midIdx), midIdx, array.length - 1);
+
+  
+  return root;
+}
+
+console.log(balanceBST([1, 4, 6, 8, 10]))
