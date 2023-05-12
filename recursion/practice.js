@@ -488,20 +488,92 @@ class Node {
   - Get the middle of the right half and make it the right child of the root created in step 1.
   - Print the preorder of the tree.
 */
+class TreeNode {
+  constructor(value) {
+    this.data = value,
+    this.leftSubtree = null,
+    this.rightSubtree = null
+  }
 
-const balanceBST = (array, start, end) => {
-  if (start > end) {
+  setLeftSubtree(value) {
+    this.leftSubtree = value; 
+  }
+
+  setRightSubtree(value) {
+    this.rightSubtree = value;
+  }
+
+
+}
+
+// Access: Average/O(log(n)) Worst/O(n)
+// Search: Average/O(log(n)) Worst/O(n)
+// Insertion: Average/O(log(n)) Worst/O(n)
+// Deletion: Average/O(log(n)) Worst/O(n)
+
+class Tree {
+  constructor(arr) {
+    this.root = buildTree(arr);
+  }
+
+  visualize() {
+    prettyPrint(this.root);
+  }
+
+  // Insertion: Average/O(log(n)) Worst/O(n)
+  insert(value) {
+    // Left Subtree are numbers less than root
+    // Right Subtree are numbers greater than root
+    let currentNode = this.root;
+
+    while (currentNode.leftSubtree || currentNode.rightSubtree) {
+      currentNode = value > currentNode.data ? currentNode.rightSubtree : currentNode.leftSubtree;
+    }
+
+    const newNode = new TreeNode(value);
+    if (value > currentNode.data) {
+      currentNode.rightSubtree = newNode;
+    } else {
+      currentNode.leftSubtree = newNode;
+    }
+
+    this.visualize();
+  }
+
+  delete(value) {
+
+  }
+}
+
+// Recursively build tree
+const buildTree = (arr) => {
+  if (arr.length < 1) {
     return null;
   }
 
-  const midIdx = Math.floor(array.length / 2);
-  const root = array[midIdx];
+  const midIdx = Math.floor((arr.length - 1) / 2);
+  const root = new TreeNode(arr[midIdx]);
 
-  balanceBST(array.slice(0, midIdx), 0, midIdx - 1);
-  balanceBST(array.slice(midIdx), midIdx, array.length - 1);
+  root.setLeftSubtree(buildTree(arr.slice(0, midIdx)));
+  root.setRightSubtree(buildTree(arr.slice(midIdx + 1)));
 
-  
   return root;
+};
+
+const prettyPrint = (node, prefix = '', isLeft = true) => {
+  if (node === null) {
+     return;
+  }
+  if (node.rightSubtree !== null) {
+    prettyPrint(node.rightSubtree, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+  }
+  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+  if (node.leftSubtree !== null) {
+    prettyPrint(node.leftSubtree, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+  }
 }
 
-console.log(balanceBST([1, 4, 6, 8, 10]))
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+console.log(firstTree.visualize())
+// const secondTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
