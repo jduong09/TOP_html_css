@@ -502,8 +502,6 @@ class TreeNode {
   setRightSubtree(value) {
     this.rightSubtree = value;
   }
-
-
 }
 
 // Access: Average/O(log(n)) Worst/O(n)
@@ -536,12 +534,80 @@ class Tree {
     } else {
       currentNode.leftSubtree = newNode;
     }
-
-    this.visualize();
   }
 
   delete(value) {
+    let currentNode = this.root;
 
+    while (currentNode.data !== value) {
+      if (!currentNode.leftSubtree || !currentNode.rightSubtree || currentNode.leftSubtree.data === value || currentNode.rightSubtree.data === value) {
+        break;
+      }
+
+      currentNode = value > currentNode.data ? currentNode.rightSubtree : currentNode.leftSubtree;
+    }
+    // At this point we have either reached the end where the value is not in the tree, or we have the parentNode and the value is either the LEFT or RIGHT subtree root.
+    if (!currentNode.leftSubtree && !currentNode.rightSubtree) {
+      console.log('Value is not in tree');
+    }
+    
+    // Value is in subtree
+    // If value is in the tree, we have three different cases to deal with.
+    // If node has both subtrees, we find the INORDER successor of the node.
+    const nodeDelete = currentNode.leftSubtree.data === value ? currentNode.leftSubtree : currentNode.rightSubtree;
+    
+    // If node is a leaf node (no subtrees) we just delete it.
+    if (!nodeDelete.leftSubtree && !nodeDelete.rightSubtree) {
+      if (currentNode.leftSubtree.data === value) {
+        currentNode.leftSubtree = null;
+      } else {
+        currentNode.rightSubtree = null;
+      }
+    } else if (nodeDelete.leftSubtree && !nodeDelete.rightSubtree) {
+      // If node has one subtree, we just replace the node with the subtree.
+       if (currentNode.leftSubtree.data === value) {
+        currentNode.leftSubtree = nodeDelete.leftSubtree;
+       } else {
+        currentNode.rightSubtree = nodeDelete.leftSubtree;
+       }
+    } else if (nodeDelete.rightSubtree && !nodeDelete.rightSubtree) {
+      // If node has one subtree, we just replace the node with the subtree.
+      if (currentNode.leftSubtree.data === value) {
+        currentNode.leftSubtree = nodeDelete.rightSubtree;
+      } else {
+        currentNode.rightSubtree = nodeDelete.rightSubtree
+      }
+    } else {
+      // If node has both subtrees, we find the INORDER successor of the node.
+      // Inorder successor is defined as smallest value greater than node value.
+      // If node has a right subtree
+      if (nodeDelete.rightSubtree !== null) {
+        let minNode = nodeDelete.rightSubtree;
+        while (minNode.leftSubtree) {
+          minNode = minNode.leftSubtree;
+        }
+        console.log(minNode);
+      } else {
+        // no right subtree, inorder successor is above value to be deleted.
+        // Parent pointer = currentNode;
+        let root = this.root;
+        let succ;
+
+        while (root) {
+          if (root.data < nodeDelete.data) {
+            root = root.rightSubtree;
+          } else if (root.data > nodeDelete.data) {
+            succ = root;
+            root = root.leftSubtree;
+          } else {
+            break;
+          }
+        }
+        console.log(succ);
+      }
+    }
+
+    return this.visualize();
   }
 }
 
@@ -551,7 +617,7 @@ const buildTree = (arr) => {
     return null;
   }
 
-  const midIdx = Math.floor((arr.length - 1) / 2);
+  const midIdx = Math.ceil((arr.length - 1) / 2);
   const root = new TreeNode(arr[midIdx]);
 
   root.setLeftSubtree(buildTree(arr.slice(0, midIdx)));
@@ -573,7 +639,13 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 }
 
+/*
 const firstTree = new Tree([10, 20, 30, 100, 500]);
-console.log(firstTree.visualize())
-// const secondTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+firstTree.visualize();
+console.log(firstTree.delete(500));
+*/
+
+const secondTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+secondTree.visualize();
+secondTree.delete(3);
 
