@@ -582,31 +582,64 @@ class Tree {
       // Inorder successor is defined as smallest value greater than node value.
       // If node has a right subtree
       if (nodeDelete.rightSubtree !== null) {
+        let minNodeParent = nodeDelete.rightSubtree;
         let minNode = nodeDelete.rightSubtree;
         while (minNode.leftSubtree) {
+          minNodeParent = minNode;
           minNode = minNode.leftSubtree;
         }
-        console.log(minNode);
+        //currentNode is parent node.
+        //nodeDelete is node being deleted.
+        //minNode is inorder successor
+        const minNodeRightSubtree = minNode.rightSubtree;
+        if (currentNode.leftSubtree === nodeDelete) {
+          currentNode.leftSubtree = minNode;
+        } else {
+          currentNode.rightSubtree = minNode;
+        }
+
+        minNode.leftSubtree = (nodeDelete.leftSubtree !== minNode) ? nodeDelete.leftSubtree : null;
+        minNode.rightSubtree = (nodeDelete.rightSubtree !== minNode) ? nodeDelete.rightSubtree : null;
+
+        if (minNodeParent !== minNode) {
+          minNodeParent.leftSubtree = minNodeRightSubtree;
+        }
       } else {
         // no right subtree, inorder successor is above value to be deleted.
         // Parent pointer = currentNode;
         let root = this.root;
-        let succ;
+        let minNode;
 
         while (root) {
           if (root.data < nodeDelete.data) {
             root = root.rightSubtree;
           } else if (root.data > nodeDelete.data) {
-            succ = root;
+            minNode = root;
             root = root.leftSubtree;
           } else {
             break;
           }
         }
-        console.log(succ);
+
+        // root will be parent of node delete
+        // minNode is inOrderSuccessor
+        // currentNode is parent of nodeDelete
+        // nodeDelete is node to be deleted
+        const minNodeRightSubtree = minNode.rightSubtree;
+        if (currentNode.leftSubtree === nodeDelete) {
+          currentNode.leftSubtree = minNode;
+        } else {
+          currentNode.rightSubtree = minNode;
+        }
+
+        minNode.leftSubtree = (nodeDelete.leftSubtree !== minNode) ? nodeDelete.leftSubtree : null;
+        minNode.rightSubtree = (nodeDelete.rightSubtree !== minNode) ? nodeDelete.rightSubtree : null;
+
+        if (root !== minNode) {
+          root.leftSubtree = minNodeRightSubtree;
+        }
       }
     }
-
     return this.visualize();
   }
 }
@@ -639,13 +672,18 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 }
 
-/*
+/* CORRECT If node being deleted has one subtree
 const firstTree = new Tree([10, 20, 30, 100, 500]);
 firstTree.visualize();
 console.log(firstTree.delete(500));
 */
-
+/* CORRECT If node being deleted has two subtrees, and inorder successor has no subtrees
 const secondTree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 secondTree.visualize();
 secondTree.delete(3);
-
+*/
+/* CORRECT If node being deleted has two subtrees, and inorder successor has no subtrees
+const thirdTree = new Tree([6, 8, 10, 11, 12, 15, 16, 17, 20, 25, 27]);
+thirdTree.visualize();
+thirdTree.delete(10);
+*/
