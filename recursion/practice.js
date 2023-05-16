@@ -642,6 +642,134 @@ class Tree {
     }
     return this.visualize();
   }
+
+  // Search: Average/O(log(n)) Worst/O(n)
+  find(value) {
+    let root = this.root;
+    while (root && value !== root.data) {
+      if (root.data === value) {
+        root = value;
+        break;
+      } else if (root.data < value) {
+        root = root.rightSubtree;
+      } else {
+        root = root.leftSubtree;
+      }
+    }
+
+   return !root ? false : root;
+  }
+
+  // Accept another function as a parameter
+  // Traverse the tree in breadth-first level order and provice each node as the argument to the provided function.
+  // This function can be implemented using either iteration or recursion
+  // This method should return an array of values if no function is given
+  levelOrder(cb) {
+    // Return an array of values in breadth-first level order
+    let visited = [];
+    let queue = [this.root];
+    while (queue.length > 0) {
+      // visit element in queue
+      const currentNode = queue.shift();
+      visited.push(currentNode.data);
+
+      if (cb) cb(currentNode.data);
+
+      // Push currentNode's adjacent elements into queue
+      if (currentNode.leftSubtree) queue.push(currentNode.leftSubtree);
+      if (currentNode.rightSubtree) queue.push(currentNode.rightSubtree);
+    }
+
+    return visited;
+  }
+
+  // (Left)(Data)(Right)
+  inOrder(cb) {
+    let visited = [];
+
+    const traverse = (node) => {
+      // Return when node is null
+      // Reached Leaf
+      if (!node) return;
+
+      // Traverse left of tree until you reach null;
+      traverse(node.leftSubtree);
+      visited.push(node.data);
+      if (cb) cb(node.data);
+      traverse(node.rightSubtree);
+    };
+
+    traverse(this.root);
+    return visited;
+  }
+
+  preOrder(cb) {
+    let visited = [];
+
+    const traverse = (node) => {
+      if (!node) return;
+
+      visited.push(node.data);
+      if (cb) cb(node.data);
+      traverse(node.leftSubtree);
+      traverse(node.rightSubtree);
+    };
+
+    traverse(this.root);
+    return visited;
+  }
+
+  postOrder(cb) {
+    let visited = [];
+
+    const traverse = (node) => {
+      if (!node) return;
+
+      traverse(node.leftSubtree);
+      traverse(node.rightSubtree);
+      visited.push(node.data);
+      if (cb) cb(node.data);
+    }
+
+    traverse(this.root);
+    return visited;
+  }
+
+  // Accepts a node and returns its height.
+  // Height is defined as the number of edges in longest path from a given node to a leaf node.
+  height(node) {
+    if (node === null) {
+      return 0;
+    } else {
+      const leftSide = this.height(node.leftSubtree);
+      const rightSide = this.height(node.rightSubtree);
+      return Math.max(leftSide, rightSide) + 1;
+    }
+
+  }
+
+  depth(node) {
+    let root = this.root;
+    let edges = 0;
+    while (node.data !== root.data) {
+      if (node.data < root.data) {
+        root = root.leftSubtree;
+        edges += 1;
+      } else {
+        root = root.rightSubtree;
+        edges += 1;
+      }
+    }
+    return edges;
+  }
+
+  isBalanced() {
+
+  }
+
+  rebalance() {
+
+  }
 }
 
 // Recursively build tree
@@ -672,6 +800,8 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 }
 
+
+
 /* CORRECT If node being deleted has one subtree
 const firstTree = new Tree([10, 20, 30, 100, 500]);
 firstTree.visualize();
@@ -686,4 +816,61 @@ secondTree.delete(3);
 const thirdTree = new Tree([6, 8, 10, 11, 12, 15, 16, 17, 20, 25, 27]);
 thirdTree.visualize();
 thirdTree.delete(10);
+*/
+
+/* Find function
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+console.log(firstTree.find(100));
+console.log(firstTree.find(25));
+*/
+
+/*
+// Level Order function
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+// console.log(firstTree.levelOrder());
+firstTree.levelOrder((value) => {
+  console.log(value + 10);
+});
+*/
+
+/*
+// inOrder Function
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+firstTree.visualize();
+console.log(firstTree.inOrder((value) => {
+  console.log(value * 10);
+}));
+*/
+
+/*
+// preOrder Function
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+firstTree.visualize();
+console.log(firstTree.preOrder((value) => {
+  console.log(value * 10);
+}));
+*/
+
+/*
+// postOrder Function
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+firstTree.visualize();
+console.log(firstTree.postOrder((value) => {
+  console.log(value * 10);
+}));
+*/
+
+// Height Function
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+const nodeTen = firstTree.find(10);
+const nodeFiveHunnid = firstTree.find(500);
+console.log(firstTree.height(nodeTen)); // 1
+console.log(firstTree.height(nodeFiveHunnid)); // 10
+
+/* Depth Function
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+const nodeTen = firstTree.find(10);
+const nodeFiveHunnid = firstTree.find(500);
+console.log(firstTree.depth(nodeTen)); // 2
+console.log(firstTree.depth(nodeFiveHunnid)); // 1
 */
