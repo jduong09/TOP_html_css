@@ -739,13 +739,12 @@ class Tree {
   // Height is defined as the number of edges in longest path from a given node to a leaf node.
   height(node) {
     if (node === null) {
-      return 0;
+      return -1;
     } else {
       const leftSide = this.height(node.leftSubtree);
       const rightSide = this.height(node.rightSubtree);
       return Math.max(leftSide, rightSide) + 1;
     }
-
   }
 
   depth(node) {
@@ -763,12 +762,23 @@ class Tree {
     return edges;
   }
 
+  // Checks if the tree is balanced
+  // A balanced tree is one where the difference between heights
+  // of left subtree and right subtree of every node is not more than 1.
   isBalanced() {
+    const heightLeftSide = this.height(this.root.leftSubtree);
+    const heightRightSide = this.height(this.root.rightSubtree);
 
+    const difference = Math.abs(heightLeftSide - heightRightSide);
+
+    return difference <= 1 ? true : false;
   }
 
+  // Rebalances an unbalanced tree.
   rebalance() {
-
+    const inOrderArray = this.inOrder();
+    this.root = buildTree(inOrderArray);
+    return this.visualize();
   }
 }
 
@@ -833,6 +843,7 @@ firstTree.levelOrder((value) => {
 });
 */
 
+
 /*
 // inOrder Function
 const firstTree = new Tree([10, 20, 30, 100, 500]);
@@ -841,6 +852,7 @@ console.log(firstTree.inOrder((value) => {
   console.log(value * 10);
 }));
 */
+
 
 /*
 // preOrder Function
@@ -860,12 +872,14 @@ console.log(firstTree.postOrder((value) => {
 }));
 */
 
+/*
 // Height Function
 const firstTree = new Tree([10, 20, 30, 100, 500]);
 const nodeTen = firstTree.find(10);
 const nodeFiveHunnid = firstTree.find(500);
 console.log(firstTree.height(nodeTen)); // 1
 console.log(firstTree.height(nodeFiveHunnid)); // 10
+*/
 
 /* Depth Function
 const firstTree = new Tree([10, 20, 30, 100, 500]);
@@ -874,3 +888,60 @@ const nodeFiveHunnid = firstTree.find(500);
 console.log(firstTree.depth(nodeTen)); // 2
 console.log(firstTree.depth(nodeFiveHunnid)); // 1
 */
+
+/*
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+console.log(firstTree.isBalanced());
+*/
+
+/*
+const firstTree = new Tree([10, 20, 30, 100, 500]);
+firstTree.visualize();
+firstTree.delete(100);
+firstTree.delete(500);
+firstTree.rebalance();
+firstTree.visualize();
+*/
+
+/*
+Write a simple driver script that does the following:
+
+ - Create a binary search tree from an array of random numbers. You can create a function that returns an array of random numbers every time you call it, if you wish.
+ - Confirm that the tree is balanced by calling isBalanced
+ - Print out all elements in level, pre, post, and in order
+ - Unbalance the tree by adding several numbers > 100
+ - Confirm that the tree is unbalanced by calling isBalanced
+ - Balance the tree by calling rebalance
+ - Confirm that the tree is balanced by calling isBalanced
+ - Print out all elements in level, pre, post, and in order
+*/
+
+const bstScript = (arr) => {
+  // Create a binary search tree from an array of random numbers. You can create a function that returns an array of random numbers every time you call it, if you wish.
+  const tree = new Tree(arr);
+  console.log(tree.visualize());
+  console.log('Tree is balanced:', tree.isBalanced());
+  console.log('Level Order: ', tree.levelOrder());
+  console.log('Pre Order: ', tree.preOrder());
+  console.log('Post Order: ', tree.postOrder());
+  console.log('In Order: ', tree.inOrder());
+
+  tree.insert(1);
+  tree.insert(2);
+  tree.insert(3);
+  tree.insert(4);
+
+  console.log('Is tree balanced?', tree.isBalanced());
+  console.log(tree.visualize());
+  console.log('Calling Rebalance...');
+
+  tree.rebalance();
+
+  console.log('Is tree balanced?', tree.isBalanced());
+  console.log('Level Order: ', tree.levelOrder());
+  console.log('Pre Order: ', tree.preOrder());
+  console.log('Post Order: ', tree.postOrder());
+  console.log('In Order: ', tree.inOrder());
+}
+
+bstScript([10, 20, 30, 100, 500]);
